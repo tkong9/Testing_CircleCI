@@ -1,0 +1,14 @@
+{
+  "name": "hello_openci",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sketch.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Taewon Kong",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.1.0"
+  }
+}
