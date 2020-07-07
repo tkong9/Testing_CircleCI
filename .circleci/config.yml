@@ -1,3 +1,22 @@
+# version: 2.1
+# orbs:
+#   node: circleci/node@1.1.6
+# jobs:
+#   build-and-test:
+#     executor:
+#       name: node/default
+#     steps:
+#       - checkout
+#       - node/with-cache:
+#           steps:
+#             - run: npm install
+#             - run: npm test
+#             - run: npx eslint sub.js
+# workflows:
+#     build-and-test:
+#       jobs:
+#         - build-and-test
+
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
@@ -10,7 +29,17 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm install
-            - run: npm test
+
+            - run:
+              name: Install Unit coverage reporter
+              command: npm install --dev jest-junit
+            - run:
+              name: Run tests with JUnit as reporter
+              command: npm test --ci --runInBand --reporters=default --reporters=jest-junit
+              environment:
+                JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+            - store_test_results:
+              path: ./reports/junit/
             - run: npx eslint sub.js
 workflows:
     build-and-test:
