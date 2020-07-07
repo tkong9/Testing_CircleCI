@@ -9,6 +9,8 @@
   "author": "Taewon Kong",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^7.4.0",
     "jest": "^26.1.0"
-  }
+  },
+  "dependencies": {}
 }
