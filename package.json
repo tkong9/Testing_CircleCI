@@ -4,8 +4,7 @@
   "description": "",
   "main": "sketch.js",
   "scripts": {
-    "test": "jest",
-    "lint": "npx eslint ."
+    "test": "jest"
   },
   "author": "Taewon Kong",
   "license": "ISC",
@@ -16,7 +15,8 @@
   "dependencies": {
     "eslint-plugin-jest": "^23.18.0",
     "install": "^0.13.0",
-    "jest-junit": "^11.0.1"
+    "jest-junit": "^11.0.1",
+    "eslint": "^7.4.0"
   },
   "rules": {
     "jest/no-disabled-tests": "warn",
