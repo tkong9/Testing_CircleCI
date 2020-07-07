@@ -5,17 +5,19 @@
   "main": "sketch.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint ./"
+    "lint": "eslint ."
   },
   "author": "Taewon Kong",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^7.4.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
     "jest": "^26.1.0"
   },
   "dependencies": {
+    "eslint-cli": "^1.1.1",
     "eslint-plugin-jest": "^23.18.0",
-    "install": "^0.13.0",
     "jest-junit": "^11.0.1"
   },
   "rules": {

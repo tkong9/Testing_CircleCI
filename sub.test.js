@@ -1,6 +1,6 @@
-const sub = require("./sub.js");
+const sub = require('./sub.js');
 
-test("adds 10 - 5 to equal 5", () => {
+test('adds 10 - 5 to equal 5', () => {
   const num1 = 10;
   const num2 = 5;
 
