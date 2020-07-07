@@ -4,7 +4,8 @@
   "description": "",
   "main": "sketch.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint ."
   },
   "author": "Taewon Kong",
   "license": "ISC",
