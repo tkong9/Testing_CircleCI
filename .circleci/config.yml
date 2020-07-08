@@ -16,8 +16,99 @@
 #   build-and-test:
 #     jobs:
 #       - build-and-test
+
+# version: 2
+# jobs:
+#   build:
+#     docker:
+#       - image: circleci/node:10.21.0
+#     working_directory: ~/repo
+#     steps:
+#       - checkout
+#       - restore_cache:
+#           keys:
+#             - v1-dependencies-{{ checksum "package.json" }}
+#             - v1-dependencies-
+#       - run: npm install
+#       - save_cache:
+#           paths:
+#             - node_modules
+#           key: v1-dependencies-{{ checksum "package.json" }}
+#       - run:
+#           name: "JavaScript Linter"
+#           command: npm run lint -- --format junit -o reports/junit/js-lint-results.xml
+#       - run:
+#           name: Install JUnit coverage reporter
+#           command: npm install --dev jest-junit
+#       - run:
+#           name: Run tests with JUnit as reporter
+#           command: npm test --ci --runInBand --reporters=default --reporters=jest-junit
+#           environment:
+#             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+#       - store_test_results:
+#           path: ./reports/junit/
+#       - store_artifacts:
+#           path: ./reports/junit
+
+# version: 2
+# jobs:
+#   build:
+#     docker:
+#       - image: circleci/node:7.10
+#     working_directory: ~/repo
+#     steps:
+#       - checkout
+#       - restore_cache:
+#           keys:
+#             - v1-dependencies-{{ checksum "package.json" }}
+#             - v1-dependencies-
+#       - run: yarn install --ignore-engines
+#       - save_cache:
+#           paths:
+#             - node_modules
+#           key: v1-dependencies-{{ checksum "package.json" }}
+#       - run:
+#           name: "JavaScript Linter"
+#           command: yarn lint -- --format junit -o reports/junit/js-lint-results.xml
+#       - run:
+#           name: "JavaScript Test Suite"
+#           environment:
+#             JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
+#           command: yarn test -- --ci --testResultsProcessor="jest-junit"
+#       - store_test_results:
+#           path: reports/junit
+#       - store_artifacts:
+#           path: reports/junit
+
 version: 2
 jobs:
+  presubmit:
+    docker:
+      - image: circleci/node:10.21.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: "JavaScript Linter"
+          command: npm run lint -- --format junit -o reports/junit/js-lint-results.xml
+      - run:
+          name: Install JUnit coverage reporter
+          command: npm install --dev jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+      - store_test_results:
+          path: ./reports/junit/
+      - store_artifacts:
+          path: ./reports/junit
   build:
     docker:
       - image: circleci/node:10.21.0
@@ -48,32 +139,3 @@ jobs:
           path: ./reports/junit/
       - store_artifacts:
           path: ./reports/junit
-# version: 2
-# jobs:
-#   build:
-#     docker:
-#       - image: circleci/node:7.10
-#     working_directory: ~/repo
-#     steps:
-#       - checkout
-#       - restore_cache:
-#           keys:
-#             - v1-dependencies-{{ checksum "package.json" }}
-#             - v1-dependencies-
-#       - run: yarn install --ignore-engines
-#       - save_cache:
-#           paths:
-#             - node_modules
-#           key: v1-dependencies-{{ checksum "package.json" }}
-#       - run:
-#           name: "JavaScript Linter"
-#           command: yarn lint -- --format junit -o reports/junit/js-lint-results.xml
-#       - run:
-#           name: "JavaScript Test Suite"
-#           environment:
-#             JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
-#           command: yarn test -- --ci --testResultsProcessor="jest-junit"
-#       - store_test_results:
-#           path: reports/junit
-#       - store_artifacts:
-#           path: reports/junit
