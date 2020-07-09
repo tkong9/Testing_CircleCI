@@ -1,68 +1,70 @@
 // Selectors
-const titleInput = document.querySelector(".title-input");
-const contentInput = document.querySelector(".content-input");
-const addButton = document.querySelector(".add-button");
-const noteList = document.querySelector(".note-list");
+const titleInput = document.querySelector('.title-input');
+const contentInput = document.querySelector('.content-input');
+const addButton = document.querySelector('.add-button');
+const noteList = document.querySelector('.note-list');
 
 // Event Listeners
-document.addEventListener("DOMContentLoaded", getNotes);
-addButton.addEventListener("click", addNote);
-noteList.addEventListener("click", deleteNote);
+/* eslint-disable no-use-before-define */
+document.addEventListener('DOMContentLoaded', getNotes);
+addButton.addEventListener('click', addNote);
+noteList.addEventListener('click', deleteNote);
 
 // Functions
 function saveToLocalStorage(note) {
   let notes;
-  if (localStorage.getItem("notes") === null) {
+  if (localStorage.getItem('notes') === null) {
     notes = [];
   } else {
-    notes = JSON.parse(localStorage.getItem("notes"));
+    notes = JSON.parse(localStorage.getItem('notes'));
   }
   notes.push(note);
-  localStorage.setItem("notes", JSON.stringify(notes));
+  localStorage.setItem('notes', JSON.stringify(notes));
 }
 
 function removeFromLocalStorage(note) {
   let notes;
-  if (localStorage.getItem("notes") === null) {
+  if (localStorage.getItem('notes') === null) {
     notes = [];
   } else {
-    notes = JSON.parse(localStorage.getItem("notes"));
+    notes = JSON.parse(localStorage.getItem('notes'));
   }
   const noteTitle = note.children[0].innerText;
   const noteContent = note.children[1].innerText;
   notes = notes.filter(
-    (e) => e.title !== noteTitle && e.content !== noteContent
+    (e) => e.title !== noteTitle && e.content !== noteContent,
   );
-  localStorage.setItem("notes", JSON.stringify(notes));
+  localStorage.setItem('notes', JSON.stringify(notes));
 }
 
 function addNote(e) {
   e.preventDefault();
   // Create Note Div
-  if (titleInput.value === "") {
-    alert("제목을 입력해 주세요.");
+  if (titleInput.value === '') {
+    /* eslint-disable no-alert */
+    alert('제목을 입력해 주세요.');
     return;
   }
-  if (contentInput.value === "") {
-    alert("내용을 입력해 주세요.");
+  if (contentInput.value === '') {
+    alert('내용을 입력해 주세요.');
     return;
   }
-  const noteDiv = document.createElement("div");
-  noteDiv.classList.add("note");
+  const noteDiv = document.createElement('div');
+  noteDiv.classList.add('note');
   // Create title h1
-  const newNoteTitle = document.createElement("h1");
+  const newNoteTitle = document.createElement('h1');
   newNoteTitle.innerText = titleInput.value;
-  newNoteTitle.classList.add("note-title");
+  newNoteTitle.classList.add('note-title');
   noteDiv.appendChild(newNoteTitle);
   // Create content p
-  const newContent = document.createElement("p");
+  const newContent = document.createElement('p');
   newContent.innerText = contentInput.value;
-  newContent.classList.add("note-content");
+  newContent.classList.add('note-content');
   noteDiv.appendChild(newContent);
   // Create Trash Button
-  const trashButton = document.createElement("button");
-  trashButton.innerHTML = `<i class="fa fa-trash" aria-hidden="true"></i>`;
-  trashButton.classList.add("trash-btn");
+  const trashButton = document.createElement('button');
+  trashButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
+  trashButton.classList.add('trash-btn');
   noteDiv.appendChild(trashButton);
   // Append to list
   noteList.appendChild(noteDiv);
@@ -71,48 +73,47 @@ function addNote(e) {
     title: titleInput.value,
     content: contentInput.value,
   });
-  titleInput.value = "";
-  contentInput.value = "";
+  titleInput.value = '';
+  contentInput.value = '';
 }
 
 function deleteNote(e) {
   const item = e.target;
-  if (item.classList[0] === "trash-btn") {
+  if (item.classList[0] === 'trash-btn') {
     const note = item.parentElement;
-    note.classList.add("fall");
+    note.classList.add('fall');
     removeFromLocalStorage(note);
-    note.addEventListener("transitionend", () => {
+    note.addEventListener('transitionend', () => {
       note.remove();
     });
   }
 }
 
 function getNotes() {
-  console.log("getnotes");
   let notes;
-  if (localStorage.getItem("notes") === null) {
+  if (localStorage.getItem('notes') === null) {
     notes = [];
   } else {
-    notes = JSON.parse(localStorage.getItem("notes"));
+    notes = JSON.parse(localStorage.getItem('notes'));
   }
   notes.forEach((note) => {
     // Create Note Div
-    const noteDiv = document.createElement("div");
-    noteDiv.classList.add("note");
+    const noteDiv = document.createElement('div');
+    noteDiv.classList.add('note');
     // Create title h1
-    const newNoteTitle = document.createElement("h1");
+    const newNoteTitle = document.createElement('h1');
     newNoteTitle.innerText = note.title;
-    newNoteTitle.classList.add("note-title");
+    newNoteTitle.classList.add('note-title');
     noteDiv.appendChild(newNoteTitle);
     // Create content p
-    const newContent = document.createElement("p");
+    const newContent = document.createElement('p');
     newContent.innerText = note.content;
-    newContent.classList.add("note-content");
+    newContent.classList.add('note-content');
     noteDiv.appendChild(newContent);
     // Create Trash Button
-    const trashButton = document.createElement("button");
-    trashButton.innerHTML = `<i class="fa fa-trash" aria-hidden="true"></i>`;
-    trashButton.classList.add("trash-btn");
+    const trashButton = document.createElement('button');
+    trashButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
+    trashButton.classList.add('trash-btn');
     noteDiv.appendChild(trashButton);
     // Append to list
     noteList.appendChild(noteDiv);
