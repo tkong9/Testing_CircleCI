@@ -153,6 +153,7 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
+      - run: npm install
       - run:
         name: Deploy
         command: curl -X POST -d {} ${hook}
