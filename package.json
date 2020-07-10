@@ -5,20 +5,30 @@
   "main": "sketch.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start": "webpack-dev-server  --config webpack.dev.js --open",
+    "build": "webpack --config webpack.prod.js"
   },
   "author": "Taewon Kong",
   "license": "ISC",
   "devDependencies": {
+    "css-loader": "^3.6.0",
     "eslint": "^7.4.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
-    "jest": "^26.1.0"
+    "html-webpack-plugin": "^4.3.0",
+    "jest": "^26.1.0",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
+    "clean-webpack-plugin": "^3.0.0",
     "eslint-cli": "^1.1.1",
     "eslint-plugin-jest": "^23.18.0",
-    "jest-junit": "^11.0.1"
+    "jest-junit": "^11.0.1",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.0.9"
   },
   "rules": {
     "jest/no-disabled-tests": "warn",
