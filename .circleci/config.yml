@@ -98,13 +98,8 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
-          name: "JavaScript Linter"
+          name: 'JavaScript Linter'
           command: npm run lint -- --format junit -o reports/junit/js-lint-results.xml
-      - run:
-          name: Install JUnit coverage reporter
-          command: npm install --dev jest-junit
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
       - store_test_results:
           path: ./reports/junit/
       - store_artifacts:
@@ -120,6 +115,7 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
       - run: npm install
+      - run: npm run build
   unit_test_step:
     docker:
       - image: circleci/node:10.21.0
@@ -147,14 +143,36 @@ jobs:
           path: ./reports/junit/
       - store_artifacts:
           path: ./reports/junit
+  deploy:
+    docker:
+      - image: circleci/node:10.21.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Deploy
+          command: curl -X POST -d {} ${hook}
+
 workflows:
   version: 2
-  build_and_test:
+  test_build_and_deploy:
     jobs:
       - presubmit_step
-      - build_step:
+      - unit_test_step:
           requires:
             - presubmit_step
-      - unit_test_step:
+      - build_step:
+          requires:
+            - unit_test_step
+      - deploy:
           requires:
             - build_step
