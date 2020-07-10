@@ -159,29 +159,20 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
-          name: Install JUnit coverage reporter
-          command: npm install --dev jest-junit
-      - run:
-          name: Run tests with JUnit as reporter
-          command: npm test --ci --runInBand --reporters=default --reporters=jest-junit
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
-      - store_test_results:
-          path: ./reports/junit/
-      - store_artifacts:
-          path: ./reports/junit
+          name: Deploy
+          command: curl -X POST -d {} ${hook}
 
 workflows:
   version: 2
   test_build_and_deploy:
     jobs:
       - presubmit_step
-      - build_step:
-          requires:
-            - presubmit_step
       - unit_test_step:
           requires:
-            - build_step
-      - deploy:
+            - presubmit_step
+      - build_step:
           requires:
             - unit_test_step
+      - deploy:
+          requires:
+            - build_step
